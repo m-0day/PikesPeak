@@ -1,5 +1,6 @@
 import pandas as pd 
 import matplotlib.pyplot as plt 
+import matplot.dates as mdates
 import numpy as np 
 from datetime import datetime, time, timedelta
 
@@ -110,7 +111,7 @@ h, m = divmod(m, 60)
 print("%d:%02d:%02d" % (h, m, s))
 
 print("Q1 the median race time for males is ")
-m, s = divmod(df_f['Net Tim'].mode(), 60)
+m, s = divmod(df_f['Net Tim'].median(), 60)
 h, m = divmod(m, 60)
 print("%d:%02d:%02d" % (h, m, s))
 
@@ -141,6 +142,13 @@ print("%d:%02d:%02d" % (h, m, s))
 
 #still some nans to get rid of
 df_f = df_f.dropna()
-new_df = df_f.groupby(['Age Div'])['Net Tim'].mean()
-fig = new_df.plot.bar()
+df_f['dt time'] = pd.to_datetime(df_f['Net Tim'], unit = 's')
+new_df = df_f.groupby(['Age Div'])['Net Tim'].mean().to_frame()
+new_df['dt time'] = pd.to_datetime(new_df['Net Tim'], unit = 's')
+fig = new_df['Net Tim'].plot.bar()
+
+plt.gcf().autofmt_ydate()
+myFmt = mdates.DateFormatter('%H:%M')
+plt.gca().yaxis.set_major_formatter(myFmt)
+
 plt.show()

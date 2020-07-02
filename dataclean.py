@@ -92,6 +92,7 @@ labels = ['1-14', '15-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79',
 df_f['Age Div'] = pd.cut(df_f.Ag, bins, labels = labels, include_lowest = True)
 df_m['Age Div'] = pd.cut(df_m.Ag, bins, labels = labels, include_lowest = True)
 
+#Answer some questions
 print("Q1 the mean race time for females is")
 m, s = divmod(df_f['Net Tim'].mean(), 60)
 h, m = divmod(m, 60)
@@ -159,6 +160,11 @@ plt.title("Average Female Race Times per Division")
 plt.show()
 
 #still some nans to get rid of
+
+
+#Plotting
+
+
 df_m = df_m.dropna()
 df_m['dt time'] = pd.to_datetime(df_m['Net Tim'], unit = 's')
 new_dm = df_m.groupby(['Age Div'])['Net Tim'].mean().to_frame()

@@ -1,6 +1,6 @@
 import pandas as pd 
 import matplotlib.pyplot as plt 
-import matplot.dates as mdates
+import matplotlib.dates as mdates
 import numpy as np 
 from datetime import datetime, time, timedelta
 
@@ -111,7 +111,7 @@ h, m = divmod(m, 60)
 print("%d:%02d:%02d" % (h, m, s))
 
 print("Q1 the median race time for males is ")
-m, s = divmod(df_f['Net Tim'].median(), 60)
+m, s = divmod(df_m['Net Tim'].median(), 60)
 h, m = divmod(m, 60)
 print("%d:%02d:%02d" % (h, m, s))
 
@@ -147,8 +147,37 @@ new_df = df_f.groupby(['Age Div'])['Net Tim'].mean().to_frame()
 new_df['dt time'] = pd.to_datetime(new_df['Net Tim'], unit = 's')
 fig = new_df['Net Tim'].plot.bar()
 
-plt.gcf().autofmt_ydate()
-myFmt = mdates.DateFormatter('%H:%M')
-plt.gca().yaxis.set_major_formatter(myFmt)
+x = labels
+x_pos = [i for i, _ in enumerate(x)]
+
+plt.bar(x_pos, new_df['Net Tim']/60)
+plt.xticks(x_pos, x)
+plt.xlabel("Age Division")
+plt.ylabel("Average Time (min")
+plt.title("Average Female Race Times per Division")
 
 plt.show()
+
+#still some nans to get rid of
+df_m = df_m.dropna()
+df_m['dt time'] = pd.to_datetime(df_m['Net Tim'], unit = 's')
+new_dm = df_m.groupby(['Age Div'])['Net Tim'].mean().to_frame()
+new_dm['dt time'] = pd.to_datetime(new_dm['Net Tim'], unit = 's')
+fig = new_dm['Net Tim'].plot.bar()
+
+x = labels
+x_pos = [i for i, _ in enumerate(x)]
+
+plt.bar(x_pos, new_df['Net Tim']/60)
+plt.xticks(x_pos, x)
+plt.xlabel("Age Division")
+plt.ylabel("Average Time (min)")
+plt.title("Average Male Race Times per Division")
+
+plt.show()
+
+# plt.gcf().autofmt_ydate()
+# myFmt = mdates.DateFormatter('%H:%M')
+# plt.gca().yaxis.set_major_formatter(myFmt)
+
+# plt.show()
